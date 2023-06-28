@@ -6,7 +6,7 @@ function Header() {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="/">Groceries</Navbar.Brand>
+        <Navbar.Brand href="/">Movies</Navbar.Brand>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/movie">Movies</Nav.Link>
