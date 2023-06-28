@@ -1,11 +1,12 @@
 import Header from './Header'
 import Footer from './Footer'
+import Movies from './Movies'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 function App() {
   const router = createBrowserRouter([
     { path: "/", element: <h1>index</h1> },
-    { path: "movie", element: <h1>Movies</h1> },
+    { path: "movie", element: <Movies/> },
     { path: "movie/:id", 
       element: <h1>Movie</h1>,
       loader: async ({ params }) => {
