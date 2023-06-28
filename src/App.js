@@ -1,6 +1,7 @@
 import Header from './Header'
 import Footer from './Footer'
 import Movies from './Movies'
+import TVShows from './TVShows'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
         return params.id
       },
     },
-    { path: "tv", element: <h1>TV Shows</h1> },
+    { path: "tv", element: <TVShows/> },
     { path: "tv/:id", 
       element: <h1>TV Show</h1>,
       loader: async ({ params }) => {

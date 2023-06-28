@@ -7,6 +7,18 @@ export async function fetchMovies({page, genres, sort_by}){
   return (await response.json()).results
 }
 
+export async function fetchTVShows({page, genres, sort_by}){
+  const response = await fetch(
+    `${base}discover/tv?page=${page}&sort_by=${sort_by}&with_genres=${genres}&api_key=${key}`)
+  return (await response.json()).results
+}
+
+export async function fetchTVGenres(){
+  const response = await fetch(
+    `${base}genre/tv/list?api_key=${key}`)
+  return (await response.json()).genres
+}
+
 export async function fetchGenres(){
   const response = await fetch(
     `${base}genre/movie/list?api_key=${key}`)

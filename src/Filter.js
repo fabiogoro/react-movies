@@ -1,13 +1,12 @@
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
-import {fetchGenres} from './util/Api.js'
 import { useEffect, useState } from "react"
 
-function Filter({clickHandler}) {
+function Filter({clickHandler, fetchFunction}) {
   let [genres, setGenres] = useState([])
   useEffect(() => {
     (async ()=>{
-      const results = await fetchGenres()
+      const results = await fetchFunction()
       setGenres(results)
     })()
   }, [])
