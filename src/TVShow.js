@@ -4,17 +4,18 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { useLoaderData } from 'react-router-dom'
-import { fetchMovie } from './util/Api'
+import { fetchTVShow } from './util/Api'
 import { useEffect, useState } from "react"
 import Carousel from 'react-bootstrap/Carousel'
+import Image from 'react-bootstrap/Image'
 
-function Movie() {
-  let [movie, setMovie] = useState(undefined)
+function TVShow() {
+  let [tvShow, setTvShow] = useState(undefined)
   const id = useLoaderData();
 
   const fetchData = async () => {
-      const result = await fetchMovie(id)
-      setMovie(result)
+      const result = await fetchTVShow(id)
+      setTvShow(result)
   }
 
   useEffect(() => {
@@ -25,15 +26,14 @@ function Movie() {
     <Container className="mt-4">
       <Row>
         <Col>
-          {movie?(
+          {tvShow?(
             <Card>
               <Row>
                 <Col>
                   <Carousel variant="dark" className="vh-50 text-center">
-                    {movie.images.posters.map((img,i)=>(
+                    {tvShow.images.posters.map((img,i)=>(
                       <Carousel.Item>
                         <img
-                          fluid
                           src={`https://image.tmdb.org/t/p/w500/${img.file_path}`}
                           alt="First slide"
                         />
@@ -44,21 +44,34 @@ function Movie() {
                 <Col>
                   <Card.Body>
                     <Card.Title>
-                      {movie.title} ({(new Date(movie.release_date)).getFullYear()})
+                      {tvShow.name} ({(new Date(tvShow.first_air_date)).getFullYear()})
                       <br/>
-                      Rating: {Math.round(movie.vote_average*10)}%
+                      Rating: {Math.round(tvShow.vote_average*10)}%
                     </Card.Title>
                     <Card.Text>
                       <p>
                         <strong>Genres: </strong>
-                        {movie.genres.map((genre,i)=>(
-                          <span>{`${i?', ':''}${genre.name}`}</span>
+                        {tvShow.genres.map((genre,i)=>(
+                          <span key={i}>{`${i?', ':''}${genre.name}`}</span>
                         ))}
                       </p>
                       <p>
                         <strong>Overview:</strong>
                         <br/>
-                        {movie.overview}
+                        {tvShow.overview}
+                      </p>
+                      <p>
+                        <strong>Creators: </strong>
+                        <Row className="text-center">
+                        {tvShow.created_by.map((creator,i)=>(
+                          <Col key={i}>{creator.name}</Col>
+                        ))}
+                        </Row>
+                        <Row className="text-center">
+                        {tvShow.created_by.map((creator,i)=>(
+                          <Col key={i}><Image roundedCircle src={`https://image.tmdb.org/t/p/w45/${creator.profile_path}`}/></Col>
+                        ))}
+                        </Row>
                       </p>
                     </Card.Text>
                   </Card.Body>
@@ -72,4 +85,4 @@ function Movie() {
   );
 }
 
-export default Movie;
+export default TVShow;
