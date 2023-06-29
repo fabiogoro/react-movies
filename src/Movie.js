@@ -1,37 +1,75 @@
+import ListGroup from 'react-bootstrap/ListGroup'
+import Card from 'react-bootstrap/Card'
+import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Card from 'react-bootstrap/Card'
-import Ratio from 'react-bootstrap/Ratio'
-import Image from 'react-bootstrap/Image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { useLoaderData } from 'react-router-dom'
+import { fetchMovie } from './util/Api'
+import { useEffect, useState } from "react"
+import Carousel from 'react-bootstrap/Carousel'
 
-function Movie({movie}) {
+function Movie() {
+  let [movie, setMovie] = useState(undefined)
+  const id = useLoaderData();
+
+  const fetchData = async () => {
+      const result = await fetchMovie(id)
+      setMovie(result)
+      console.log(result)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
   return (
-    <Col xs="3" className="mb-3">
-      <Card>
-        <Card.Body className="p-0">
-          <Row>
-            <Col xs="6" style={{height: "25vh"}}>
-              {movie.poster_path?(
-                <Image className="h-100" fluid rounded src={`https://image.tmdb.org/t/p/w220_and_h330_face/${movie.poster_path}`}></Image>
-                  ):(
-                    <div className="text-center fs-1"><FontAwesomeIcon className="position-absolute top-50 translate-middle" icon={faImage} /></div>
-                  )}
-            </Col>
-            <Col xs="6">
-              <Card.Text className="h-100 m-2"><strong className="h-50 overflow-y-hidden">{movie.title}</strong>
-              </Card.Text>
-              <Card.Text className="position-absolute bottom-0 m-2">
-                Rating: {Math.round(movie.vote_average*10)}%<br/>
-                {movie.release_date}<br/>
-                <Card.Link href="#">Read more...</Card.Link>
-              </Card.Text>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-    </Col>
+    <Container className="mt-4">
+      <Row>
+        <Col>
+          {movie?(
+            <Card>
+              <Row>
+                <Col>
+                  <Carousel variant="dark" className="vh-50 text-center">
+                    {movie.images.posters.map((img,i)=>(
+                      <Carousel.Item>
+                        <img
+                          fluid
+                          src={`https://image.tmdb.org/t/p/w500/${img.file_path}`}
+                          alt="First slide"
+                        />
+                      </Carousel.Item>
+                    ))}
+                  </Carousel>
+                </Col>
+                <Col>
+                  <Card.Body>
+                    <Card.Title>
+                      {movie.title} ({(new Date(movie.release_date)).getFullYear()})
+                      <br/>
+                      Rating: {Math.round(movie.vote_average*10)}%
+                    </Card.Title>
+                    <Card.Text>
+                      <p>
+                        <strong>Genres: </strong>
+                        {movie.genres.map((genre,i)=>(
+                          <span>{`${i?', ':''}${genre.name}`}</span>
+                        ))}
+                      </p>
+                      <p>
+                        <strong>Overview:</strong>
+                        <br/>
+                        {movie.overview}
+                      </p>
+                    </Card.Text>
+                  </Card.Body>
+                </Col>
+              </Row>
+            </Card>
+          ):null}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

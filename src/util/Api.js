@@ -7,6 +7,12 @@ export async function fetchMovies({page, genres, sort_by}){
   return (await response.json()).results
 }
 
+export async function fetchMovie(id){
+  const response = await fetch(
+    `${base}movie/${id}?append_to_response=images&api_key=${key}`)
+  return (await response.json())
+}
+
 export async function fetchTVShows({page, genres, sort_by}){
   const response = await fetch(
     `${base}discover/tv?page=${page}&sort_by=${sort_by}&with_genres=${genres}&api_key=${key}`)
